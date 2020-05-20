@@ -5,6 +5,7 @@ import processing.core.PApplet;
 public class EngineMaster {
 
     public static EngineMaster engineMaster;
+    
     public static PApplet parent;
     public static int numObjects;
     public static Scene currentScene;
