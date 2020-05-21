@@ -10,20 +10,20 @@ public class Main extends PApplet {
 
     Scene scene1;
     GameObject ref;
+    GameObject b;
+    GameObject p;
 
     public static void main(String args[]) { PApplet.main("Main"); }
 
-    public void settings() { size(800, 800); }
+    public void settings() { size(1200, 1000); }
 
     public void setup() {
         EngineMaster.getInstance(this);
-        scene1 = new Scene("Scene01", 60);
-        scene1.createGameObject("Banana");
-        scene1.createGameObject("Poop");
-        new Sprite(scene1.getObject(0),"src/core/Engine2D/Engine_Data/Banana_Sprite.jpg");
-        new Sprite(scene1.getObject(1),null);
-        scene1.getObjectByName("Poop").setLayerNum(2);
-        scene1.createLayers();
+        scene1 = new Scene("Scene01", 144);
+        b = scene1.createGameObject("Banana", 1);
+        p = scene1.createGameObject("Poop", 1);
+        new Sprite(b,"src/core/Engine2D/Engine_Data/Banana_Sprite.jpg");
+        new Sprite(p,null);
     }
 
     public void draw() {
@@ -31,17 +31,17 @@ public class Main extends PApplet {
         fill(0, 0, 255);
         textSize(30);
         text(frameRate, 750, 40);
-        scene1.getObjectByName("Poop").transform.setPosition(new PVector(mouseX, mouseY));
+        p.transform.setPosition(new PVector(mouseX, mouseY));
         scene1.Update();
     }
 
     public void mouseClicked(){
-        scene1.getObjectByName("Poop").transform.setScale(new PVector(0.6f, 0.3f));
-        System.out.println(scene1.getObjectByName("Poop").transform.scale());
+        p.transform.setScale(new PVector(0.3f, 0.3f));
+        b.transform.setPosition(new PVector(500, 500));
+        System.out.println(p.transform.scale());
     }
 
     public void keyPressed(){
-        scene1.getObjectByName("Poop").transform.setScale(new PVector(0.3f, 0.3f));
-        System.out.println(scene1.getObjectByName("Poop").transform.scale());
+        scene1.switchLayer(b, 3);
     }
 }

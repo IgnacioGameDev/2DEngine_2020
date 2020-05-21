@@ -20,7 +20,7 @@ public class Sprite extends Component {
     public Sprite(GameObject g, String newPath){
         super(g);
         imgSize = g.transform.scale();
-        layer = parent.createGraphics(800, 800);
+        layer = gameObject.getLayer();
         if (newPath == null || !Files.exists(Paths.get(newPath)) ){ path = defaultPath; }
         else { path = newPath; }
         img = parent.loadImage(path);
@@ -35,7 +35,7 @@ public class Sprite extends Component {
                 img.resize(x, y);
                 imgSize = gameObject.transform.scale();
             }
-            layer.image(img, gameObject.transform.position().x, gameObject.transform.position().y);
+            layer.image(img, gameObject.transform.position().x-img.width/2, gameObject.transform.position().y-img.height/2);
             layer.endDraw();
         }
     }

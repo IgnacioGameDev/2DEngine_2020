@@ -9,7 +9,7 @@ import java.util.Comparator;
 public class Scene extends Thing {
 
     private int freq;
-    ArrayList<PGraphics> layers;
+    private ArrayList<PGraphics> layers;
     private ArrayList<GameObject> worldObjects;
     private ArrayList<GameObject> UIObjects;
 
@@ -18,9 +18,17 @@ public class Scene extends Thing {
         else { name = newName; }
         if (newFreq == 0 || newFreq < 0){ freq = 60;}
         else { freq = newFreq; }
+        parent.frameRate(freq);
         layers = new ArrayList<>();
         worldObjects = new ArrayList<>();
         UIObjects = new ArrayList<>();
+        for (int i = 0; i < 3; i++){
+            PGraphics pg;
+            pg = parent.createGraphics(parent.width, parent.height);
+            pg.beginDraw();
+            pg.endDraw();
+            layers.add(pg);
+        }
     }
 
     @Override
@@ -47,9 +55,16 @@ public class Scene extends Thing {
 
     public void setFPS(int fps) { this.freq = fps; }
 
-    public void createGameObject(String objectName){
-        GameObject g = new GameObject(objectName);
+    public GameObject createGameObject(String objectName, int layerNum){
+        if (layerNum < 1)
+            layerNum = 1;
+        GameObject g = new GameObject(objectName, layers.get(layerNum - 1));
         worldObjects.add(g);
+        return g;
+    }
+
+    public void switchLayer(GameObject g, int layerNum){
+        g.setLayer(layers.get(layerNum - 1));
     }
 
     public GameObject getObject(int listNum){
@@ -64,16 +79,4 @@ public class Scene extends Thing {
         return null;
     }
 
-    public void createLayers(){
-        worldObjects.sort(Comparator.comparingInt(GameObject::getLayerNum));
-        for (int i = 0; i < worldObjects.get(worldObjects.size() - 1).getLayerNum(); i++){
-            PGraphics pg;
-            pg = parent.createGraphics(800, 800);
-            layers.add(pg);
-        }
-        for (GameObject g : worldObjects){
-            if (g.hasComponent("Sprite"))
-                ((Sprite) g.getComponent("Sprite")).setLayer(layers.get(g.getLayerNum() - 1));
-        }
-    }
 }
