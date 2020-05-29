@@ -22,7 +22,7 @@ public class Scene extends Thing {
         worldObjects = new ArrayList<>();
         UIObjects = new ArrayList<>();
 //        for (int i = 0; i < 3; i++){
-//            PGraphics pg;
+//            PGraphics pg;e2
 //            pg = parent.createGraphics(parent.width, parent.height);
 //            pg.beginDraw();
 //            pg.endDraw();
