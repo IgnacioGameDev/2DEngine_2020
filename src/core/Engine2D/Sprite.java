@@ -19,8 +19,8 @@ public class Sprite extends Component {
 
     public Sprite(GameObject g, String newPath){
         super(g);
+        layer = EngineMaster.currentScene.uniqueLayer;
         imgSize = g.transform.scale();
-        layer = gameObject.getLayer();
         if (newPath == null || !Files.exists(Paths.get(newPath)) ){ path = defaultPath; }
         else { path = newPath; }
         img = parent.loadImage(path);
@@ -42,4 +42,9 @@ public class Sprite extends Component {
 
     public void setLayer(PGraphics layer) { this.layer = layer; }
 
+    public void setImg(String newPath){
+        if (newPath == null || !Files.exists(Paths.get(newPath)) ){ path = defaultPath; }
+        else { path = newPath; }
+        img = parent.loadImage(path);
+    }
 }

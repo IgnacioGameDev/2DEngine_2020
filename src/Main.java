@@ -20,10 +20,13 @@ public class Main extends PApplet {
     public void setup() {
         EngineMaster.getInstance(this);
         scene1 = new Scene("Scene01", 144);
-        b = scene1.createGameObject("Banana", 1);
+        scene1.load();
+        b = scene1.createGameObject("Banana", 0);
         p = scene1.createGameObject("Poop", 1);
         new Sprite(b,"src/core/Engine2D/Engine_Data/Banana_Sprite.jpg");
         new Sprite(p,null);
+        new CustomCompExample(p);
+        //b.transform.setVelocity(new PVector(1, 0));
     }
 
     public void draw() {
@@ -31,17 +34,21 @@ public class Main extends PApplet {
         fill(0, 0, 255);
         textSize(30);
         text(frameRate, 750, 40);
-        p.transform.setPosition(new PVector(mouseX, mouseY));
+        //p.transform.setPosition(new PVector(mouseX, mouseY));
+        System.out.println(EngineMaster.keysDown);
+        EngineMaster.executeInputs();
         scene1.Update();
     }
 
     public void mouseClicked(){
-        p.transform.setScale(new PVector(0.3f, 0.3f));
-        b.transform.setPosition(new PVector(500, 500));
-        System.out.println(p.transform.scale());
+
     }
 
     public void keyPressed(){
-        scene1.switchLayer(b, 3);
+        EngineMaster.pressKey(key);
+    }
+
+    public void keyReleased(){
+        EngineMaster.unpressKey(key);
     }
 }

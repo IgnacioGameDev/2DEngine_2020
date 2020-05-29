@@ -9,7 +9,7 @@ import java.util.Comparator;
 public class Scene extends Thing {
 
     private int freq;
-    private ArrayList<PGraphics> layers;
+    public PGraphics uniqueLayer;
     private ArrayList<GameObject> worldObjects;
     private ArrayList<GameObject> UIObjects;
 
@@ -19,16 +19,18 @@ public class Scene extends Thing {
         if (newFreq == 0 || newFreq < 0){ freq = 60;}
         else { freq = newFreq; }
         parent.frameRate(freq);
-        layers = new ArrayList<>();
         worldObjects = new ArrayList<>();
         UIObjects = new ArrayList<>();
-        for (int i = 0; i < 3; i++){
-            PGraphics pg;
-            pg = parent.createGraphics(parent.width, parent.height);
-            pg.beginDraw();
-            pg.endDraw();
-            layers.add(pg);
-        }
+//        for (int i = 0; i < 3; i++){
+//            PGraphics pg;
+//            pg = parent.createGraphics(parent.width, parent.height);
+//            pg.beginDraw();
+//            pg.endDraw();
+//            layers.add(pg);
+//        }
+        uniqueLayer = parent.createGraphics(parent.width, parent.height);
+        uniqueLayer.beginDraw();
+        uniqueLayer.endDraw();
     }
 
     @Override
@@ -37,10 +39,8 @@ public class Scene extends Thing {
         //UIObjects.sort(Comparator.comparingInt(GameObject::getLayerNum));
         for (GameObject g : worldObjects){ g.Update(); }
         for (GameObject g : UIObjects){ g.Update(); }
-        for (PGraphics pg : layers){
-            pg.clear();
-            parent.image(pg, 0, 0);
-        }
+        uniqueLayer.clear();
+        parent.image(uniqueLayer, 0, 0);
     }
 
     @Override
@@ -56,15 +56,15 @@ public class Scene extends Thing {
     public void setFPS(int fps) { this.freq = fps; }
 
     public GameObject createGameObject(String objectName, int layerNum){
-        if (layerNum < 1)
-            layerNum = 1;
-        GameObject g = new GameObject(objectName, layers.get(layerNum - 1));
+        GameObject g = new GameObject(objectName, layerNum);
         worldObjects.add(g);
+        worldObjects.sort(Comparator.comparingInt(GameObject::getLayerNum));
         return g;
     }
 
     public void switchLayer(GameObject g, int layerNum){
-        g.setLayer(layers.get(layerNum - 1));
+        g.setLayerNum(layerNum);
+        worldObjects.sort(Comparator.comparingInt(GameObject::getLayerNum));
     }
 
     public GameObject getObject(int listNum){
@@ -78,5 +78,7 @@ public class Scene extends Thing {
         }
         return null;
     }
+
+    public void load(){ EngineMaster.setCurrentScene(this); }
 
 }
