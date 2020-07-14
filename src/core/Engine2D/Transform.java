@@ -34,7 +34,7 @@ public class Transform {
     public PVector scale() { return scale; }
     public void setPosition(PVector position) { this.position = position; }
     public void setRotation(float rotation) { this.rotation = rotation; }
-    public void setScale(PVector scale) { this.scale = scale; }
+    public void setScale(PVector scale) { if (!(scale.x <= 0) && !(scale.y <= 0)){this.scale = scale;} }
 
     public void setVelocity(PVector velocity) { this.velocity = velocity; }
     public void setAcceleration(PVector acceleration) { this.acceleration = acceleration; }

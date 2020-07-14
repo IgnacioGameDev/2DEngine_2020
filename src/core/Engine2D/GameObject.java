@@ -1,19 +1,19 @@
 package core.Engine2D;
 
+import core.Engine2D.Components.Sprite;
 import processing.core.PGraphics;
-import processing.core.PVector;
 import processing.data.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class GameObject extends Thing {
 
     public Transform transform;
     private int layerNum;
     private ArrayList<Component> componentList;
-    protected boolean isActive;
+
+    //Deactivating an object will only work if there is at least one object being updated
+    public boolean isActive;
 
     public GameObject(String newName, int layerNum){
         this.layerNum = layerNum;
@@ -44,6 +44,7 @@ public class GameObject extends Thing {
         transform.Update();
         for (Component c : componentList){ c.update(); }
     }
+
     @Override public JSONObject serializeToJSON() { return null; }
     @Override public void loadJSONObject(JSONObject jsonObject) { }
     public void setActive(boolean active) { isActive = active; }

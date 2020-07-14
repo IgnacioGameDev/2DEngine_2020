@@ -35,10 +35,15 @@ public class Scene extends Thing {
 
     @Override
     public void Update(){
-        //worldObjects.sort(Comparator.comparingInt(GameObject::getLayerNum));
-        //UIObjects.sort(Comparator.comparingInt(GameObject::getLayerNum));
-        for (GameObject g : worldObjects){ g.Update(); }
-        for (GameObject g : UIObjects){ g.Update(); }
+        parent.background(100, 100, 0);
+        for (GameObject g : worldObjects){
+            if (g.isActive)
+                g.Update();
+        }
+        for (GameObject g : UIObjects){
+            if (g.isActive)
+                g.Update();
+        }
         uniqueLayer.clear();
         parent.image(uniqueLayer, 0, 0);
     }
@@ -67,6 +72,10 @@ public class Scene extends Thing {
         worldObjects.sort(Comparator.comparingInt(GameObject::getLayerNum));
     }
 
+    public void sortLayers(){
+        worldObjects.sort(Comparator.comparingInt(GameObject::getLayerNum));
+    }
+
     public GameObject getObject(int listNum){
         return worldObjects.get(listNum);
     }
@@ -77,6 +86,18 @@ public class Scene extends Thing {
                 return g;
         }
         return null;
+    }
+
+    public ArrayList<GameObject> getObjectsByName(String name){
+        ArrayList<GameObject> output = new ArrayList<>();
+        for (GameObject g : worldObjects){
+            if (g.name.equals(name))
+                output.add(g);
+        }
+        if (output.size() == 0)
+            return null;
+        else
+            return output;
     }
 
     public void load(){ EngineMaster.setCurrentScene(this); }

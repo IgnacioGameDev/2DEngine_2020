@@ -1,10 +1,10 @@
 import core.Engine2D.*;
+import core.Engine2D.Components.CircleCollider;
+import core.Engine2D.Components.CustomCompExample;
+import core.Engine2D.Components.Sprite;
+import core.Engine2D.Components.TheDeleter;
 import processing.core.PApplet;
-import processing.core.PGraphics;
 import processing.core.PVector;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class Main extends PApplet {
 
@@ -12,6 +12,7 @@ public class Main extends PApplet {
     GameObject ref;
     GameObject b;
     GameObject p;
+    GameObject h;
 
     public static void main(String args[]) { PApplet.main("Main"); }
 
@@ -21,28 +22,37 @@ public class Main extends PApplet {
         EngineMaster.getInstance(this);
         scene1 = new Scene("Scene01", 144);
         scene1.load();
+        EngineMaster.setCurrentScene(scene1);
         b = scene1.createGameObject("Banana", 0);
         p = scene1.createGameObject("Poop", 1);
-        new Sprite(b,"src/core/Engine2D/Engine_Data/Banana_Sprite.jpg");
+        b.transform.setPosition(new PVector(900, 700));
+        new Sprite(b, EngineMaster.deFilePath + "Banana_Sprite.jpg");
         new Sprite(p,null);
-        new CustomCompExample(p);
+        new CircleCollider(b);
+        new CircleCollider(p);
+        p.transform.setScale(new PVector(0.3f, 0.3f));
+        p.transform.setPosition(new PVector(100, 100));
+        h = scene1.createGameObject("Chomper", 2);
+        h.transform.setPosition(new PVector(200, 800));
+        new Sprite(h,EngineMaster.deFilePath + "Banana_Sprite.jpg");
+        new TheDeleter(h);
+        //new CustomCompExample(b);
         //b.transform.setVelocity(new PVector(1, 0));
     }
 
     public void draw() {
-        background(100, 100, 0);
+        EngineMaster.Update();
+        scene1.Update();
         fill(0, 0, 255);
         textSize(30);
         text(frameRate, 750, 40);
         //p.transform.setPosition(new PVector(mouseX, mouseY));
-        System.out.println(EngineMaster.keysDown);
-        EngineMaster.executeInputs();
-        scene1.Update();
-    }
-
-    public void mouseClicked(){
 
     }
+
+    public void mousePressed(){ EngineMaster.pressMouse(mouseButton); }
+
+    public void mouseReleased(){ EngineMaster.unpressMouse(mouseButton); }
 
     public void keyPressed(){
         EngineMaster.pressKey(key);
