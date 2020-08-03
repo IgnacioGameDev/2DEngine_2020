@@ -1,7 +1,9 @@
 package core.Engine2D;
 
 import processing.core.PApplet;
+import processing.data.JSONObject;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -9,6 +11,11 @@ import java.util.HashSet;
 public class EngineMaster {
 
     public static EngineMaster engineMaster;
+
+    //Engine colors
+    public static Color defBckClr = new Color(100, 100, 0);
+    public static Color defTxtClr = new Color(0x1C2C7A);
+    public static Color defObjClr = new Color(15);
 
     public static String deFilePath = "src/core/Engine2D/Engine_Data/";
 
@@ -67,14 +74,13 @@ public class EngineMaster {
             return false;
     }
 
-    public static void setCurrentScene(Scene currentScene) {
-        EngineMaster.currentScene = currentScene;
+    public static void loadScene(Scene currentScene) {
+        EngineMaster.currentScene = currentScene; currentScene.refresh();
     }
 
     public static void layerChange(){ EngineMaster.currentScene.sortLayers(); }
 
     public static void Update(){
-
         executeInputs();
         if (cicle == 0)
         executeCollisions();
@@ -82,6 +88,7 @@ public class EngineMaster {
         if (cicle >= colRate)
             cicle = 0;
         executeRoutines();
+        currentScene.Update();
     }
 
     public static void executeRoutines(){
@@ -105,6 +112,8 @@ public class EngineMaster {
     public static void addInput(InputModule im){
         inputObjects.add(im);
     }
+
+    public static void removeInput(InputModule im){ inputObjects.remove(im); }
 
     public static void pressKey(char key){
         keysDown.add(key);
@@ -136,6 +145,8 @@ public class EngineMaster {
 
     public static void addCollider(Collider c) { colliderObjects.add(c); }
 
+    public static void removeCollider(Collider c){ colliderObjects.remove(c); }
+
     public static void executeCollisions(){
         for (int i = 0; i < colliderObjects.size(); i++){
             for (int j = 0; j < colliderObjects.size(); j++){
@@ -146,6 +157,17 @@ public class EngineMaster {
                     }
             }
         }
+    }
+
+    public static void saveScene(){
+        parent.saveJSONObject(currentScene.serializeToJSON(), deFilePath + currentScene.name + ".json");
+    }
+
+    public static void loadSceneFromFile(String fileName){
+        Scene s = new Scene("default", 60);
+        JSONObject j = parent.loadJSONObject(deFilePath + fileName);
+        s.loadFromJSON(j);
+        loadScene(s);
     }
 
 }

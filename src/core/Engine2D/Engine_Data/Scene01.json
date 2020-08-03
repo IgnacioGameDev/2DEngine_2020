@@ -1,0 +1,87 @@
+{
+  "name": "Scene01",
+  "freq": 144,
+  "objList": [
+    {
+      "yPos": 700,
+      "xScl": 2,
+      "rotation": 0,
+      "name": "Banana",
+      "xPos": 900,
+      "yScl": 2,
+      "compList": [
+        {
+          "path": "src/core/Engine2D/Engine_Data/Banana_Sprite.jpg",
+          "type": "Sprite"
+        },
+        {
+          "type": "CircleCollider",
+          "radius": 260,
+          "colSize": 2
+        }
+      ],
+      "layerNum": 0
+    },
+    {
+      "yPos": 100,
+      "xScl": 0.30000001192092896,
+      "rotation": 0,
+      "name": "Poop",
+      "xPos": 100,
+      "yScl": 0.30000001192092896,
+      "compList": [
+        {
+          "path": "src/core/Engine2D/Engine_Data/Bird_Sprite.png",
+          "type": "Sprite"
+        },
+        {
+          "type": "CircleCollider",
+          "radius": 153.60000610351562,
+          "colSize": 0.30000001192092896
+        }
+      ],
+      "layerNum": 1
+    },
+    {
+      "yPos": 100,
+      "xScl": 1,
+      "rotation": 0,
+      "name": "Bing",
+      "xPos": 700,
+      "yScl": 1,
+      "compList": [
+        {
+          "type": "CircleCollider",
+          "radius": 100,
+          "colSize": 1
+        },
+        {
+          "a": 255,
+          "r": 36,
+          "b": 32,
+          "activeText": "Coroutines work, heck yeah",
+          "g": 165,
+          "fontSize": 60,
+          "type": "DisplayText"
+        }
+      ],
+      "layerNum": 2
+    },
+    {
+      "yPos": 278,
+      "xScl": 1,
+      "rotation": 0,
+      "name": "Chomper",
+      "xPos": 1029,
+      "yScl": 1,
+      "compList": [
+        {
+          "path": "src/core/Engine2D/Engine_Data/Banana_Sprite.jpg",
+          "type": "Sprite"
+        },
+        {"type": "TheDeleter"}
+      ],
+      "layerNum": 2
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 package core.Engine2D;
 
 import processing.core.PGraphics;
+import processing.data.JSONArray;
 import processing.data.JSONObject;
 
 import java.util.ArrayList;
@@ -48,17 +49,7 @@ public class Scene extends Thing {
         parent.image(uniqueLayer, 0, 0);
     }
 
-    @Override
-    public JSONObject serializeToJSON() {
-        return null;
-    }
-
-    @Override
-    public void loadJSONObject(JSONObject jsonObject) {
-
-    }
-
-    public void setFPS(int fps) { this.freq = fps; }
+    public void setFPS(int fps) { this.freq = fps; parent.frameRate(freq); }
 
     public GameObject createGameObject(String objectName, int layerNum){
         GameObject g = new GameObject(objectName, layerNum);
@@ -74,6 +65,12 @@ public class Scene extends Thing {
 
     public void sortLayers(){
         worldObjects.sort(Comparator.comparingInt(GameObject::getLayerNum));
+    }
+
+    public void refresh(){
+        for (GameObject g : worldObjects)
+            g.passLayer(uniqueLayer);
+        parent.frameRate(freq);
     }
 
     public GameObject getObject(int listNum){
@@ -100,6 +97,33 @@ public class Scene extends Thing {
             return output;
     }
 
-    public void load(){ EngineMaster.setCurrentScene(this); }
+    public ArrayList<GameObject> getWorldObjects() {
+        return worldObjects;
+    }
+
+    @Override
+    public JSONObject serializeToJSON() {
+        JSONObject sceneData = new JSONObject();
+        sceneData.setString("name", name);
+        sceneData.setInt("freq", freq);
+        JSONArray sceneObjects = new JSONArray();
+        for (int i = 0; i < worldObjects.size(); i++)
+            sceneObjects.setJSONObject(i, worldObjects.get(i).serializeToJSON());
+        sceneData.setJSONArray("objList", sceneObjects);
+        System.out.println("objects saved  " + sceneObjects.size());
+        return sceneData;
+    }
+
+    @Override
+    public void loadFromJSON(JSONObject jO) {
+        name = jO.getString("name");
+        setFPS(jO.getInt("freq"));
+        for (int i = 0; i < jO.getJSONArray("objList").size(); i++){
+            GameObject g = new GameObject("default", 0);
+            g.loadFromJSON(jO.getJSONArray("objList").getJSONObject(i));
+            worldObjects.add(g);
+        }
+        sortLayers();
+    }
 
 }

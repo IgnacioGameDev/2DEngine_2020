@@ -5,17 +5,19 @@ import core.Engine2D.EngineMaster;
 import core.Engine2D.GameObject;
 import core.Engine2D.InputModule;
 import processing.core.PVector;
+import processing.data.JSONObject;
 
 public class CustomCompExample extends Component implements InputModule {
 
     public CustomCompExample(GameObject g){
         super(g);
-        initialize();
+        startInput();
     }
 
     @Override
     protected void update() {
-
+        if (!gameObject.isActive)
+            stopInput();
     }
 
     @Override
@@ -37,5 +39,17 @@ public class CustomCompExample extends Component implements InputModule {
             gameObject.transform.setPosition(new PVector(parent.mouseX, parent.mouseY));
 
         }
+    }
+
+    @Override
+    public JSONObject serializeToJSON() {
+        JSONObject j = new JSONObject();
+        j.setString("type", getClass().getSimpleName());
+        return j;
+    }
+
+    @Override
+    public void loadFromJSON(JSONObject jO) {
+
     }
 }

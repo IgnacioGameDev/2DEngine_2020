@@ -8,7 +8,7 @@ public class CustomObjExample implements InputModule {
 
     public CustomObjExample(GameObject g){
         this.g = g;
-        initialize();
+        startInput();
     }
 
     @Override

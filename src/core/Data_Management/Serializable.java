@@ -5,5 +5,5 @@ import processing.data.JSONObject;
 //Allows an object to implement serialization so it can store its information onto JSON files
 public interface Serializable {
     public JSONObject serializeToJSON();
-    public void loadJSONObject(JSONObject jsonObject);
+    public void loadFromJSON(JSONObject jO);
 }
